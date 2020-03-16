@@ -1,3 +1,4 @@
+import { ThunkDispatch } from 'redux-thunk';
 import {
   SetTodosAction,
   SetErrorAction,
@@ -7,8 +8,11 @@ import {
   SetUsersAction,
   DeleteTodoAction,
   ActionTypes,
+  Actions,
 } from './actionTypes';
 import { TodosSortBy } from '../constants';
+import { RootState } from '../types';
+import { loadTodos, loadUsers } from '../utils';
 
 export const startLoading = (): SetIsLoadingAction => ({
   type: ActionTypes.SetIsLoading,
@@ -49,3 +53,39 @@ export const deleteTodo = (id: number): DeleteTodoAction => ({
   type: ActionTypes.DeleteTodo,
   payload: id,
 });
+
+// action creator(thunk creator)
+export const loadData = () => {
+  // thunk
+  return (dispatch: ThunkDispatch<RootState, unknown, Actions>) => {
+    dispatch(startLoading());
+
+    Promise.all([loadTodos(), loadUsers()])
+      .then(([todosFromServer, users]) => {
+        dispatch(setUsers(users));
+        dispatch(setTodos(todosFromServer));
+        dispatch(setIsLoaded());
+        dispatch(setError(null));
+      })
+      .catch((serverError) => dispatch(setError(serverError.message)))
+      .finally(() => dispatch(stopLoading()));
+  };
+};
+
+// useMemo, useCallback, React.memo, reselect(createSelector)
+
+// function memo(fn) {
+//   let prevArg;
+//   let prevValue;
+
+//   return memoizedFn = (arg) => {
+//     if (arg === prevArg) {
+//       return prevValue;
+//     }
+
+//     prevArg = arg;
+//     prevValue = fn(arg);
+
+//     return prevValue;
+//   };
+// }

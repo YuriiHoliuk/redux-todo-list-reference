@@ -1,48 +1,24 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { RootState } from '../../types';
 import { TodoList } from '../../components/TodoList';
-import { loadTodos, loadUsers, sortTodos } from '../../utils';
+import { sortTodos } from '../../utils';
 
 export interface Props extends Pick<RootState, 'isLoaded' | 'isLoading' | 'error' | 'sortBy'> {
   todos: TodoWithUser[];
-  setTodos: (todos: Todo[]) => void;
-  setUsers: (todos: User[]) => void;
-  startLoading: () => void;
-  stopLoading: () => void;
-  setIsLoaded: () => void;
-  setError: (error: string | null) => void;
+  loadData: () => void;
   deleteTodo: (id: number) => void;
 }
 
-export const TodoAppTemplate: FC<Props> = (props) => {
+export const TodoAppTemplate: FC<Props> = React.memo((props) => {
   const {
     isLoaded,
     isLoading,
     error,
     sortBy,
     todos,
-    setTodos,
-    setUsers,
-    startLoading,
-    stopLoading,
-    setIsLoaded,
-    setError,
+    loadData,
     deleteTodo,
   } = props;
-
-  const loadData = useCallback(() => {
-    startLoading();
-
-    Promise.all([loadTodos(), loadUsers()])
-      .then(([todosFromServer, users]) => {
-        setUsers(users);
-        setTodos(todosFromServer);
-        setIsLoaded();
-        setError(null);
-      })
-      .catch((serverError) => setError(serverError.message))
-      .finally(() => stopLoading());
-  }, [setError, setIsLoaded, setTodos, setUsers, startLoading, stopLoading]);
 
   const sortedTodos = useMemo<TodoWithUser[]>(() => sortTodos(todos, sortBy), [sortBy, todos]);
 
@@ -79,4 +55,4 @@ export const TodoAppTemplate: FC<Props> = (props) => {
       deleteTodo={deleteTodo}
     />
   );
-};
+});

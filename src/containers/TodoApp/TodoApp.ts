@@ -1,23 +1,15 @@
 import { connect } from 'react-redux';
 import { TodoAppTemplate, Props } from './TodoAppTemplate';
 import { RootState } from '../../types';
-import { prepareTodos } from '../../utils';
 import {
-  startLoading,
-  stopLoading,
-  setIsLoaded,
-  setError,
-  setTodos,
-  setUsers,
+  loadData,
   deleteTodo,
 } from '../../store';
+import { selectTodosWithUsers } from '../../store/selectors';
 
 type StateProps = Pick<Props, 'isLoaded' | 'isLoading' | 'error' | 'sortBy' | 'todos'>;
 
-type ActionsNames = 'setTodos' | 'setUsers' | 'startLoading'
-| 'stopLoading' | 'setIsLoaded' | 'setError' | 'deleteTodo';
-
-type DispatchProps = Pick<Props, ActionsNames>;
+type DispatchProps = Pick<Props, 'loadData' | 'deleteTodo'>;
 
 const mapStateToProps = (state: RootState) => {
   return {
@@ -25,19 +17,12 @@ const mapStateToProps = (state: RootState) => {
     isLoading: state.isLoading,
     sortBy: state.sortBy,
     error: state.error,
-    todos: state.users.length
-      ? prepareTodos(state.todos, state.users)
-      : [],
+    todos: selectTodosWithUsers(state),
   };
 };
 
 const mapDispatchToProps = {
-  startLoading,
-  stopLoading,
-  setIsLoaded,
-  setError,
-  setTodos,
-  setUsers,
+  loadData,
   deleteTodo,
 };
 
