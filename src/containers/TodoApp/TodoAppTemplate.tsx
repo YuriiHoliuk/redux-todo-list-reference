@@ -1,7 +1,9 @@
 import React, { FC, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { RootState } from '../../types';
 import { TodoList } from '../../components/TodoList';
 import { sortTodos } from '../../utils';
+import { SortTodosSelect } from '../SortTodosSelect';
 
 export interface Props extends Pick<RootState, 'isLoaded' | 'isLoading' | 'error' | 'sortBy'> {
   todos: TodoWithUser[];
@@ -50,9 +52,15 @@ export const TodoAppTemplate: FC<Props> = React.memo((props) => {
   }
 
   return (
-    <TodoList
-      todos={sortedTodos}
-      deleteTodo={deleteTodo}
-    />
+    <>
+      <Link to="/">
+        Home
+      </Link>
+      <SortTodosSelect />
+      <TodoList
+        todos={sortedTodos}
+        deleteTodo={deleteTodo}
+      />
+    </>
   );
 });

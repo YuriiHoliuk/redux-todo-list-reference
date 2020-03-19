@@ -71,21 +71,3 @@ export const loadData = () => {
       .finally(() => dispatch(stopLoading()));
   };
 };
-
-// useMemo, useCallback, React.memo, reselect(createSelector)
-
-// function memo(fn) {
-//   let prevArg;
-//   let prevValue;
-
-//   return memoizedFn = (arg) => {
-//     if (arg === prevArg) {
-//       return prevValue;
-//     }
-
-//     prevArg = arg;
-//     prevValue = fn(arg);
-
-//     return prevValue;
-//   };
-// }
