@@ -1,10 +1,22 @@
 import { TodosSortBy } from '../constants';
 
-export interface RootState {
+export interface TodosState {
+  todos: Todo[];
+  sortBy: TodosSortBy;
+}
+
+export interface UsersState {
+  users: User[];
+}
+
+export interface ApiState {
   isLoaded: boolean;
   isLoading: boolean;
-  todos: Todo[];
-  users: User[];
   error: string | null;
-  sortBy: TodosSortBy;
+}
+
+export interface RootState {
+  todosState: TodosState;
+  usersState: UsersState;
+  apiState: ApiState;
 }
