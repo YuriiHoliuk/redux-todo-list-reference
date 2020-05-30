@@ -4,8 +4,12 @@ import { RootState } from '../../types';
 import {
   loadData,
   deleteTodo,
+  selectSortBy,
+  selectTodosWithUsers,
+  selectIsLoading,
+  selectIsLoaded,
+  selectError,
 } from '../../store';
-import { selectTodosWithUsers } from '../../store/selectors';
 
 type StateProps = Pick<Props, 'isLoaded' | 'isLoading' | 'error' | 'sortBy' | 'todos'>;
 
@@ -13,10 +17,10 @@ type DispatchProps = Pick<Props, 'loadData' | 'deleteTodo'>;
 
 const mapStateToProps = (state: RootState) => {
   return {
-    isLoaded: state.isLoaded,
-    isLoading: state.isLoading,
-    sortBy: state.sortBy,
-    error: state.error,
+    isLoaded: selectIsLoaded(state),
+    isLoading: selectIsLoading(state),
+    sortBy: selectSortBy(state),
+    error: selectError(state),
     todos: selectTodosWithUsers(state),
   };
 };

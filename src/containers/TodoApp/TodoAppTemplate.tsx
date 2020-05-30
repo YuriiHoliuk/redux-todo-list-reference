@@ -1,11 +1,15 @@
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { RootState } from '../../types';
 import { TodoList } from '../../components/TodoList';
 import { sortTodos } from '../../utils';
 import { SortTodosSelect } from '../SortTodosSelect';
+import { TodosSortBy } from '../../constants';
 
-export interface Props extends Pick<RootState, 'isLoaded' | 'isLoading' | 'error' | 'sortBy'> {
+export interface Props {
+  isLoaded: boolean;
+  isLoading: boolean;
+  error: string | null;
+  sortBy: TodosSortBy;
   todos: TodoWithUser[];
   loadData: () => void;
   deleteTodo: (id: number) => void;

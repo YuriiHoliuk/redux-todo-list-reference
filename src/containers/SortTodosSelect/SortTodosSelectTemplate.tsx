@@ -1,8 +1,9 @@
 import React, { FC, useCallback } from 'react';
 import { TodosSortBy } from '../../constants';
-import { RootState } from '../../types';
 
-export interface Props extends Pick<RootState, 'isLoaded' | 'sortBy'> {
+export interface Props {
+  isLoaded: boolean;
+  sortBy: TodosSortBy;
   setSortBy: (sortBy: TodosSortBy) => void;
 }
 
